@@ -1,0 +1,34 @@
+<main class="flex flex-col items-center justify-center h-full gap-2 text-center text-white bg-gradient-to-t from-stone-700 to-stone-900">
+
+  <a href="/" class="absolute flex items-center gap-2 px-2 py-1 font-semibold text-black rounded-full shadow-xl top-5 left-5 w-max bg-lime-500">
+    <i class='bx bx-arrow-back'></i>
+    <span>Volver</span>
+  </a>
+
+  <h2 class="text-4xl font-black text-lime-500">Registro</h2>
+
+  <form action="/auth/signup" method="post" class="flex flex-col w-5/6 gap-2 p-2 shadow-xl bg-stone-900/60 rounded-xl">
+
+    <label for="username">Nombre de usuario:</label>
+    <input id="username" name="username" required class="px-2 py-1 text-black rounded-lg outline-none">
+
+    <label for="name">Nombre completo:</label>
+    <input id="name" name="name" required class="px-2 py-1 text-black rounded-lg outline-none">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required class="px-2 py-1 text-black rounded-lg outline-none">
+
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required class="px-2 py-1 text-black rounded-lg outline-none">
+
+    <label for="birthday">Nacimiento:</label>
+    <input type="date" id="birthday" name="birthday" required class="w-full px-2 py-1 text-black rounded-lg outline-none">
+
+    <label for="profile_pic">Foto de perfil:</label>
+    <input id="profile_pic" name="profile_pic" class="px-2 py-1 text-black rounded-lg outline-none">
+
+    <button class="w-full px-2 py-1 font-semibold text-black rounded-full bg-lime-500 hover:lime-600">Crear</button>
+
+  </form>
+
+</main>

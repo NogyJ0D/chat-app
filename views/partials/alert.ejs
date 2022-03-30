@@ -1,0 +1,7 @@
+<div class="<%= alert.color  %> rounded-xl border border-<%= alert.color %> flex gap-4 justify-between absolute top-10 mx-auto w-max">
+  <% if (alert.status === 'success') { %>
+  <i class='bx bx-check'></i>
+  <p><%= alert.message %></p>
+  <% } %>
+  <i class='bx bx-x'></i>
+</div>
