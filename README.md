@@ -2,7 +2,7 @@
 
 > Por hacer
   1. Contacts Page:
-     1. Agregar amigo
+     1. Ver mis solicitudes pendientes
      2. Iniciar chat
      3. Eliminar amigo
   2. Chats Page:
@@ -19,9 +19,11 @@
   1. Auth:
      1. Login
      2. Signup
-  2. Contacts Page
+  2. Contacts Page:
+     1. Agregar amigo
   3. Chats Page
   4. Profile Page:
      1. Diseño inicial
 
 > Notas
+UI MOBILE FIRST, ver con pantalla chica

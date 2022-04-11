@@ -13,20 +13,26 @@ const Message = sequelize.define( // Modelo
     chat_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'chats',
-      referencesKey: 'id'
+      references: {
+        model: 'chats',
+        referencesKey: 'id'
+      }
     },
     sender_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     receiver_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     text: {
       type: DataTypes.STRING(510),
@@ -38,5 +44,7 @@ const Message = sequelize.define( // Modelo
     }
   }
 )
+
+// Message.sync({ alter: true })
 
 module.exports = Message

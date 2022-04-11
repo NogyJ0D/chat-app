@@ -1,9 +1,12 @@
-const express = require('express')
+const { Router } = require('express')
 const FriendshipController = require('../controllers/friendship')
 
-const router = express.Router()
-const friendshipController = new FriendshipController()
+module.exports = app => {
+  const friendshipController = new FriendshipController()
+  const router = Router()
+  app.use('/friendship', router)
 
-router.post('/add-friend', friendshipController.addFriend)
-
-module.exports = router
+  router.post('/add-friend', friendshipController.addFriend)
+  router.put('/accept-friend/friendship-id/:friendshipId', friendshipController.acceptFriendship)
+  router.delete('/delete-friend/friendship-id/:friendshipId', friendshipController.deleteFriendship)
+}

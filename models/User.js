@@ -45,4 +45,6 @@ const User = sequelize.define( // Modelo
   // }
 )
 
+// User.sync({ alter: true })
+
 module.exports = User

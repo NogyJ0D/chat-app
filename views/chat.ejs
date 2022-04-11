@@ -1,0 +1,138 @@
+<main class="flex flex-col items-center h-full">
+
+  <div class="flex flex-wrap items-center w-full gap-4 text-white border-b-2 bg-eerie-400/50 border-lime-500">
+    <img class="w-24 h-24" src="<%= friend.profile_pic %>" alt="<%= friend.username %>">
+    <div class="flex flex-col justify-center gap-2">
+      <p class="text-xl font-semibold"><%= friend.username %></p>
+      <p id="userStatus"></p>
+    </div>
+  </div>
+
+  <div id="messages" class="flex flex-col w-full h-full gap-4 p-4 text-lg font-semibold text-white bg-eerie-100">
+    <% if (chat.messages.length > 0) { %>
+    <% chat.messages.forEach(message => { %>
+    <% if (message.sender_id === user.id) { %>
+    <div class="flex flex-col max-w-xs gap-2 px-3 py-2 ml-auto border border-lime-500 rounded-b-3xl rounded-tl-3xl bg-eerie-400/50">
+      <p><%= message.text %></p>
+      <p class="ml-auto"><%= message.createdAt %></p>
+    </div>
+    <% } else { %>
+    <div class="flex flex-col max-w-xs gap-2 px-3 py-2 mr-auto border border-lime-500 rounded-b-3xl rounded-tr-3xl bg-eerie-400/50">
+      <p><%= message.text %></p>
+      <p class="ml-auto"><%= message.createdAt %></p>
+    </div>
+    <% }})} %>
+  </div>
+
+  <form id="messageForm" class="flex items-center w-full gap-2 pb-12 pr-2 mt-auto h-max">
+    <!-- <form id="messageForm" action="/message/send-message/chat-id/< chat.id %>" method="POST" class="flex items-center w-full gap-2 pb-12 pr-2 mt-auto h-max"> -->
+    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+    <textarea id="text" name="text" required maxlength="510" class="w-full h-20 p-2 border-0 outline-none resize-none" placeholder="Escribe tu mensaje..."></textarea>
+    <button><i class='p-2 text-2xl font-black border border-black rounded-full text-lime-500 bg-eerie-200 w-max bx bxs-send'></i></button>
+  </form>
+
+  <button id="scrollButton" onclick="{window.scroll({ left: 0, top: document.body.scrollHeight, behavior: 'smooth'})}" class="fixed px-1 text-4xl text-white border rounded-full bg-black/50 bottom-16 right-5">
+    <i class='font-black bx bx-down-arrow-alt'></i>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>
+  <script>
+    window.onscroll = () => {
+      if (document.body.scrollHeight - window.scrollY === document.body.offsetHeight) {
+        document.getElementById('scrollButton').style.visibility = 'hidden'
+      } else document.getElementById('scrollButton').style.visibility = 'visible'
+    }
+
+    window.onload = () => {
+      window.scroll({
+        left: 0,
+        top: document.body.scrollHeight,
+        behavior: 'auto'
+      })
+      document.getElementById('scrollButton').style.visibility = 'hidden'
+    }
+
+    const messageForm = document.getElementById('messageForm')
+
+    const socketData = {
+      chatId: "<%- chat.id %>",
+      userId: "<%- user.id %>",
+      friendId: "<%- friend.id %>"
+    }
+    const socket = io()
+
+    socket.emit('userConnected', socketData.userId)
+
+    socket.on('usersOnline', (res) => {
+      if (Object.values(res).includes(socketData.friendId)) {
+        document.getElementById('userStatus').innerText = 'En linea'
+      }
+    })
+    socket.on('userOffline', res => {
+      if (!Object.values(res).includes(socketData.friendId)) {
+        document.getElementById('userStatus').innerText = ''
+      }
+    })
+
+    socket.on('sendMessage', res => {
+      if (res.chatId === socketData.chatId) {
+        console.log('Tengo un nuevo mensaje con este usuario')
+        document.getElementById('messages').innerHTML += `
+        <div class="flex flex-col max-w-xs gap-2 px-3 py-2 mr-auto border border-lime-500 rounded-b-3xl rounded-tr-3xl bg-eerie-400/50">
+          <p>${res.message}</p>
+          <p class="ml-auto">${luxon.DateTime.now().toFormat('dd/MM t')}</p>
+        </div>
+        `
+      }
+    })
+
+    messageForm.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      console.log('Form token: ' + e.target._csrf.value)
+      console.log('Form text: ' + e.target.text.value)
+
+      const formData = new FormData(messageForm)
+      // formData.append('_csrf', e.target._csrf.value)
+      formData.append('text', e.target.text.value)
+
+      const response = await axios("/message/send-message/chat-id/<%- chat.id %>", {
+        method: 'post',
+        data: JSON.stringify({
+          'text': e.target.text.value
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'CSRF-Token': e.target._csrf.value
+        },
+        credentials: 'same-origin'
+      }).then(res => {
+        return res
+      }).then(data => {
+        if (data.data.success) {
+          socket.emit('newMessage', {
+            chatId: socketData.chatId,
+            friendId: socketData.friendId,
+            message: e.target.text.value
+          })
+
+          return document.getElementById('messages').innerHTML += `
+          <div class="flex flex-col max-w-xs gap-2 px-3 py-2 ml-auto border border-lime-500 rounded-b-3xl rounded-tl-3xl bg-eerie-400/50">
+            <p>${e.target.text.value}</p>
+            <p class="ml-auto">${luxon.DateTime.now().toFormat('dd/MM t')}</p>
+          </div>
+          `
+        }
+      })
+
+      document.getElementById('text').innerHTML = ''
+    })
+
+    // // {
+    // //   user: <%- JSON.stringify(user) %>
+    // // }
+  </script>
+
+</main>

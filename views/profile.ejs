@@ -1,13 +1,17 @@
-<main class="flex flex-col items-center gap-4 p-8">
+<main class="flex flex-col items-center gap-2 px-8 py-4">
 
-  <div class="border-[12px] rounded-lg border-lime-500">
+  <h2 class="px-2 text-3xl font-black text-white rounded-md bg-eerie-500/30">Mi perfil</h2>
+
+  <div class="border-2 rounded-lg mt-2 border-lime-500">
     <img src="<%- user.profile_pic %>" width="300" class="object-cover" height="300" alt="<%- user.username %>">
   </div>
 
-  <div class="w-full p-2 text-2xl font-semibold text-center text-white border-4 rounded-lg border-lime-500 bg-stone-900/40">
+  <div class="w-full p-2 text-2xl font-semibold text-center text-white border-2 rounded-lg border-lime-500 bg-stone-900/40">
     <p><%- user.username %></p>
     <p><%- user.name %></p>
     <p><%- user.email %></p>
   </div>
+
+  <a href="/auth/logout" class="text-2xl text-white font-semibold text-center w-full border-2 border-lime-500 bg-stone-900 rounded-full px-2">Cerrar sesión</a>
 
 </main>

@@ -10,17 +10,32 @@ const Chat = sequelize.define( // Modelo
       allowNull: false,
       primaryKey: true
     },
+
+    friendship_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: 'friendships',
+        referencesKey: 'id'
+      }
+    },
+
     user_one_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     user_two_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     pending: {
       type: DataTypes.BOOLEAN,
@@ -29,5 +44,7 @@ const Chat = sequelize.define( // Modelo
     }
   }
 )
+
+// Chat.sync({ alter: true })
 
 module.exports = Chat

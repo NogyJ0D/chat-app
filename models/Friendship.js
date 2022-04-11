@@ -13,21 +13,27 @@ const Friendship = sequelize.define( // Modelo
     user_one_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     user_two_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: 'users',
-      referencesKey: 'id'
+      references: {
+        model: 'users',
+        referencesKey: 'id'
+      }
     },
     pending: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: true
     }
   }
 )
+
+// Friendship.sync({ alter: true })
 
 module.exports = Friendship

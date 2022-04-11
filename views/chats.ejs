@@ -1,0 +1,30 @@
+<main class="flex flex-col items-center gap-4 px-8 py-4">
+
+  <% if (flash.errorChat?.length > 0) { %>
+  <div class="absolute flex items-center justify-between gap-4 px-2 bg-red-400 bg-opacity-50 border border-red-400 w-max bottom-16 rounded-xl">
+    <i class='bx bx-error'></i>
+    <p><%- flash.errorChat %></p>
+  </div>
+  <% } %>
+
+  <h2 class="px-2 text-3xl font-black text-white rounded-md bg-eerie-500/30">Mis chats activos (<%= chats.length %>)</h2>
+  <% if (chats.length > 0) { %>
+  <% chats.forEach(contact => { %>
+  <a href="/user/chat/<%= contact.friendship_id %>" class="flex flex-wrap items-center w-full gap-4 p-2 text-white border-2 rounded-lg bg-eerie-400/50 border-lime-500">
+    <img class="w-24 h-24" src="<%= contact.profile_pic %>" alt="<%= contact.username %>">
+    <p class="text-xl font-semibold"><%= contact.username %></p>
+  </a>
+  <% }) %>
+  <% } else { %>
+  <div class="absolute flex w-full justify-evenly bottom-16 ">
+    <p class="px-2 pt-2 text-2xl font-semibold text-white border bg-eerie-500/50 border-lime-500">
+      Abre tus contactos y<br>
+      comienza un nuevo chat.<br>
+      <i class='pl-[38px] text-4xl font-black bx bx-down-arrow-alt'></i>
+    </p>
+    <p class="opacity-0 select-none">a</p>
+    <p class="opacity-0 select-none">a</p>
+  </div>
+  <% } %>
+
+</main>
